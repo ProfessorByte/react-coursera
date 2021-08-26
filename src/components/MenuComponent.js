@@ -1,12 +1,5 @@
 import React, { Component } from "react";
-import {
-  Card,
-  CardImg,
-  CardImgOverlay,
-  CardText,
-  CardBody,
-  CardTitle,
-} from "reactstrap";
+import { Card, CardImg, CardImgOverlay, CardTitle } from "reactstrap";
 import DishDetail from "./DishdetailComponent";
 
 export default class MenuComponent extends Component {
@@ -16,6 +9,11 @@ export default class MenuComponent extends Component {
     this.state = {
       selectedDish: null,
     };
+    console.log("Menu Component constructor is invoked");
+  }
+
+  componentDidMount() {
+    console.log("Menu Component componentDidMount is invoked");
   }
 
   onDishSelect(dish) {
@@ -41,6 +39,8 @@ export default class MenuComponent extends Component {
         </div>
       );
     });
+
+    console.log("Menu Component render is invoked");
 
     return (
       <div className="container">
