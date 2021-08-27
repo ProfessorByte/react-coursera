@@ -2,16 +2,26 @@ import React, { Component } from "react";
 import { Card, CardImg, CardText, CardBody, CardTitle } from "reactstrap";
 
 export default class DishDetail extends Component {
+  componentDidMount() {
+    console.log("Dishdetail Component componentDidMount is invoked");
+  }
+
+  componentDidUpdate() {
+    console.log("Dishdetail Component componentDidUpdate is invoked");
+  }
+
   renderDish(dish) {
     if (dish != null) {
       return (
-        <Card>
-          <CardImg width="100%" src={dish.image} alt={dish.name} />
-          <CardBody>
-            <CardTitle>{dish.name}</CardTitle>
-            <CardText>{dish.description}</CardText>
-          </CardBody>
-        </Card>
+        <div className="col-12 col-md-5 m-1">
+          <Card>
+            <CardImg width="100%" src={dish.image} alt={dish.name} />
+            <CardBody>
+              <CardTitle>{dish.name}</CardTitle>
+              <CardText>{dish.description}</CardText>
+            </CardBody>
+          </Card>
+        </div>
       );
     } else {
       return <div></div>;
@@ -21,7 +31,7 @@ export default class DishDetail extends Component {
   renderComments(comments) {
     if (comments != null) {
       return (
-        <div>
+        <div className="col-12 col-md-5 m-1">
           <h4>Comments</h4>
           <ul className="list-unstyled">
             {comments.map((comment) => {
@@ -50,17 +60,15 @@ export default class DishDetail extends Component {
   }
 
   render() {
+    console.log("Dishdetail Component render is invoked");
+
     return (
       <div className="container">
         <div className="row">
-          <div className="col-12 col-md-5 m-1">
-            {this.renderDish(this.props.dish)}
-          </div>
-          <div className="col-12 col-md-5 m-1">
-            {this.renderComments(
-              this.props.dish != null ? this.props.dish.comments : null
-            )}
-          </div>
+          {this.renderDish(this.props.dish)}
+          {this.renderComments(
+            this.props.dish != null ? this.props.dish.comments : null
+          )}
         </div>
       </div>
     );
