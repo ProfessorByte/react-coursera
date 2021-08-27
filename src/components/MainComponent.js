@@ -30,9 +30,7 @@ export default class Main extends Component {
         </Navbar>
         <Menu
           dishes={this.state.dishes}
-          onClick={(dishID) => {
-            this.onDishSelect(dishID);
-          }}
+          onClick={(dishID) => this.onDishSelect(dishID)}
         />
         <DishDetail
           dish={
