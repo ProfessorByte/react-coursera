@@ -1,4 +1,4 @@
-import React from "react";
+import React, { Component } from "react";
 import {
   Card,
   CardImg,
@@ -7,8 +7,122 @@ import {
   CardTitle,
   Breadcrumb,
   BreadcrumbItem,
+  Button,
+  Modal,
+  ModalHeader,
+  ModalBody,
+  Row,
+  Col,
+  Label,
 } from "reactstrap";
 import { Link } from "react-router-dom";
+import { Control, Errors, LocalForm } from "react-redux-form";
+
+const required = (val) => val && val.length;
+const maxLength = (len) => (val) => !val || val.length <= len;
+const minLength = (len) => (val) => val && val.length >= len;
+
+class CommentForm extends Component {
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      isModalOpen: false,
+    };
+    this.toggleModal = this.toggleModal.bind(this);
+    this.handleSubmit = this.handleSubmit.bind(this);
+  }
+
+  toggleModal() {
+    this.setState({
+      isModalOpen: !this.state.isModalOpen,
+    });
+  }
+
+  handleSubmit(values) {
+    this.toggleModal();
+    let valuesStr = "Current state is: " + JSON.stringify(values);
+    console.log(valuesStr);
+    alert(valuesStr);
+  }
+
+  render() {
+    return (
+      <React.Fragment>
+        <Modal isOpen={this.state.isModalOpen} toggle={this.toggleModal}>
+          <ModalHeader toggle={this.toggleModal}>Submit Comment</ModalHeader>
+          <ModalBody>
+            <LocalForm onSubmit={(values) => this.handleSubmit(values)}>
+              <Row className="form-group">
+                <Col md={12}>
+                  <Label htmlFor="rating">Rating</Label>
+                  <Control.select
+                    model=".rating"
+                    name="rating"
+                    className="form-control"
+                  >
+                    {[1, 2, 3, 4, 5].map((num) => {
+                      return <option>{num}</option>;
+                    })}
+                  </Control.select>
+                </Col>
+              </Row>
+              <Row className="form-group">
+                <Col md={12}>
+                  <Label htmlFor="author">Your Name</Label>
+                  <Control.text
+                    model=".author"
+                    id="author"
+                    name="author"
+                    placeholder="Your Name"
+                    className="form-control"
+                    validators={{
+                      required,
+                      minLength: minLength(3),
+                      maxLength: maxLength(15),
+                    }}
+                  />
+                  <Errors
+                    className="text-danger"
+                    model=".yourname"
+                    show="touched"
+                    messages={{
+                      required: "Required",
+                      minLength: "Must be greater than 2 characters",
+                      maxLength: "Must be 15 characters or less",
+                    }}
+                  />
+                </Col>
+              </Row>
+              <Row className="form-group">
+                <Col md={12}>
+                  <Label htmlFor="comment">Comment</Label>
+                  <Control.textarea
+                    model=".comment"
+                    id="comment"
+                    name="comment"
+                    rows="6"
+                    className="form-control"
+                  />
+                </Col>
+              </Row>
+              <Row className="form-group">
+                <Col md={12}>
+                  <Button type="submit" color="primary">
+                    Submit
+                  </Button>
+                </Col>
+              </Row>
+            </LocalForm>
+          </ModalBody>
+        </Modal>
+        <Button outline onClick={this.toggleModal}>
+          <span className="fa fa-pencil fa-lg"></span> Submit Comment
+        </Button>
+      </React.Fragment>
+    );
+  }
+}
 
 function RenderDish({ dish }) {
   if (dish != null) {
@@ -52,6 +166,7 @@ function RenderComments({ comments }) {
             );
           })}
         </ul>
+        <CommentForm />
       </div>
     );
   } else {
